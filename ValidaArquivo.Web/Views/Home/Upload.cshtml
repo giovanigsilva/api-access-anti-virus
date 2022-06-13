@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Upload de arquivo";
+}
+
+<h1 class="display-6">Enviar arquivo</h1>
+
+<form class="upload-form" enctype="multipart/form-data" method="post" asp-action="ProcessarUpload">
+    <div class="row">
+        <div class="col-md-9">
+            <input type="file" class="form-control upload-file" name="file" multiple="multiple" accept=".exe, .dll" />
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary" style="width:100%">Enviar</button>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+
+<script>
+    $(function() {
+        var fileInput = $('.upload-file');
+        var maxSize = 32 * 1024 * 1024;
+
+        $('.upload-form').submit(function(e) {
+            if (fileInput.get(0).files.length) {
+                var fileSize = fileInput.get(0).files[0].size; // in bytes
+
+                if (fileSize > maxSize) {
+                    alert('Você inseriu arquivos maiores que ' + (maxSize / 1024 / 1024) + 'MB. Insira arquivos de até ' + (maxSize / 1024 / 1024) + 'MB');
+                    $('.upload-form').trigger("reset");
+                    return false;
+                }
+            } else {
+                alert('choose file, please');
+                return false;
+            }
+
+        });
+    });
+</script>

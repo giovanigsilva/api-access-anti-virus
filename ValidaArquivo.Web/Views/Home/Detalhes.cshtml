@@ -1,0 +1,84 @@
+﻿@model ValidaArquivo.Domain.Entities.ArquivoUpload
+
+@{
+    ViewData["Title"] = $"{Model.NomeArquivo} - Detalhes";
+}
+
+<h1 class="display-6">Detalhes do arquivo</h1>
+<hr />
+
+<dl style="columns:3;">
+    <dt>Nome:</dt>
+    <dd>@Model.NomeArquivo</dd>
+    <dt>Data do upload:</dt>
+    <dd>@Model.DataCriacao</dd>
+    <dt>Status:</dt>
+    <dd>@Model.Status</dd>
+</dl>
+
+@if (Model.ErroEnvioVirusTotal != null)
+{
+    <dl>
+        <dt>Erro ao enviar o arquivo para análise:</dt>
+        <dd>@Model.ErroEnvioVirusTotal</dd>
+    </dl>
+}
+
+@if (Model.ErroRetornoVirusTotal != null)
+{
+    <dl>
+        <dt>Erro ao receber o retorno da análise:</dt>
+        <dd>@Model.ErroRetornoVirusTotal</dd>
+    </dl>
+}
+
+<dl style="columns:2">
+    @if (Model.DataEnvioVirusTotal.HasValue)
+    {
+        <dt>Data de envio para o Virus Total:</dt>
+        <dd>@Model.DataEnvioVirusTotal</dd>
+    }
+    @if (Model.DataResultadoVirusTotal.HasValue)
+    {
+        <dt>Data de retorno da análise:</dt>
+        <dd>@Model.DataResultadoVirusTotal</dd>
+    }
+</dl>
+
+@if (Model.DataResultadoVirusTotal.HasValue)
+{
+    <dl>
+        <dt>Link da verificação:</dt>
+        <dd><a href="@Model.VirusTotalPermalink" target="_blank">@Model.VirusTotalPermalink</a></dd>
+    </dl>
+
+    <dl>
+        <dt>Resultado da análise:</dt>
+    </dl>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Mecanismo de verificação</th>
+                <th>Versão</th>
+                <th>Detectado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var analise in Model.AnaliseArquivos)
+            {
+                <tr>
+                    <td>@analise.Antivirus</td>
+                    <td>@analise.Version</td>
+                    <td>@(analise.Detected ? "Sim" : "Não")</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+<style>
+    dd {
+        break-before: avoid;
+    }
+</style>

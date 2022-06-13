@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ValidaArquivo.Domain.Responses.ArquivoUpload.ResumoArquivoResponse>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1 class="display-6">Arquivos enviados</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Nome do arquivo</th>
+            <th>Status</th>
+            <th>Data do upload</th>
+            <th>Data do envio para análise</th>
+            <th>Data do resultado</th>
+            <th>Detecções</th>
+            <th>Opções</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var arquivo in Model)
+        {
+            <tr>
+                <td>@arquivo.NomeArquivo</td>
+                <td>@arquivo.Status</td>
+                <td>@arquivo.DataUploadArquivo</td>
+                <td>@arquivo.DataEnvioAnalise</td>
+                <td>@arquivo.DataResultado</td>
+                <td>@arquivo.Deteccoes</td>
+                <td><a href="/home/detalhes/@arquivo.Id">Detalhes</a></td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<div class="row">
+    <div class="col-md-6">
+        @if (@ViewBag.DataUltimaAtualizacao != null)
+        {
+            <span><strong>Data da última atualização:</strong> @ViewBag.DataUltimaAtualizacao</span>
+        }
+    </div>
+    <div class="col-md-6" style="text-align:end">
+        <span>Próxima consulta em <strong>5 minutos</strong></span>
+    </div>
+</div>
+
+<script>
+    const interval = 5 * 60 * 1000;
+    setTimeout(() => {
+        window.location.reload();
+    }, interval)
+</script>
